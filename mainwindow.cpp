@@ -65,6 +65,7 @@ void MainWindow::ChangeSize()
     UpdatePreview();
 }
 
+//render Preview
 void MainWindow::UpdatePreview()
 {
     QImage leftPicture(picOriginal.scaled(ui->spinWidth->value(), ui->spinHight->value()));
