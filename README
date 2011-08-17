@@ -1,0 +1,9 @@
+qimg2lcd
+--------
+
+This application was created during the chaos communication congress 2011.
+The goal is to convert any image format supported by QImage to the .lcd
+file format of the r0ket.
+
+This is a very early release. There are no error corrections. This application
+comes without any warranty.
