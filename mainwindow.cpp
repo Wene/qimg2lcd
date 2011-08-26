@@ -17,16 +17,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::OpenFile()
 {
-    QString file = QFileDialog::getOpenFileName(this,tr("Bild öffnen"),
-                                                QDir::homePath(),tr("Bilder (*.*)"));
+    QString file = QFileDialog::getOpenFileName(this,trUtf8("Bild öffnen"),
+                                                QDir::homePath(),trUtf8("Bilder (*.*)"));
     picOriginal = QImage(file);
     ChangeSize();
 }
 
 void MainWindow::ExportFile()
 {
-    QString filename = QFileDialog::getSaveFileName(this,tr("LCD Speichern"),
-                                                QDir::homePath(),tr("LCD Dateien (*.lcd)"));
+    QString filename = QFileDialog::getSaveFileName(this,trUtf8("LCD Speichern"),
+                                                QDir::homePath(),trUtf8("LCD Dateien (*.lcd)"));
     QImage picture(picOriginal.scaled(ui->spinWidth->value(), ui->spinHight->value()));
     char pixmap[(picture.height()+7)/8][picture.width()];
     memset(pixmap, 0, (picture.height()+7)/8 * picture.width());
