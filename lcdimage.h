@@ -26,7 +26,7 @@ public slots:
     void setWidth(int);
     void setHeight(int);
     void setInvert(bool);
-    void setColorLimit(int, int, int);
+    void setColorLimit(int r, int g, int b);
 
 private:
     bool invert;

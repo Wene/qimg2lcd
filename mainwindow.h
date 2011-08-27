@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "lcdimage.h"
 
 namespace Ui {
     class MainWindow;
@@ -24,6 +25,8 @@ public slots:
 private:
     Ui::MainWindow *ui;
     QImage picOriginal;
+
+    LcdImage myImage;
 };
 
 #endif // MAINWINDOW_H
