@@ -21,7 +21,7 @@ public:
 signals:
 
 public slots:
-    void saveAsLcd();
+    void saveAsLcd(QString);
     void LoadFile(QString);
     void setWidth(int);
     void setHeight(int);

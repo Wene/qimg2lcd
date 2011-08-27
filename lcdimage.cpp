@@ -49,6 +49,24 @@ QImage LcdImage::getImgPreview()
     return fullImage.scaled(width,height);
 }
 
+QImage LcdImage::getLcdPreview()
+{
+    QImage colorImage(fullImage.scaled(width, height));
+    QImage monoImage(width, height, QImage::Format_Mono);
+    monoImage.fill(0);
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            QColor myPoint(colorImage.pixel(x,y));
+            monoImage.setPixel(x,y,(myPoint.red() > redLimit ||
+                    myPoint.green() > greenLimit ||
+                    myPoint.blue() > blueLimit));
+        }
+    }
+    return monoImage;
+}
+
 void LcdImage::LoadFile(QString filename)
 {
     fullImage = QImage(filename);
@@ -111,7 +129,32 @@ void LcdImage::setColorLimit(int r, int g, int b)
     }
 }
 
-void LcdImage::saveAsLcd()
+void LcdImage::saveAsLcd(QString filename)
 {
-    //export to LCD file -> to be done
+    QImage picture = getLcdPreview();
+    char pixmap[(height+7)/8][width];
+    memset(pixmap, 0, (height+7)/8 * width);
+
+    //Read pixels from image in the array
+    for (int x = 0; x < width; x++)
+    {
+        for (int y = 0; y < height; y++)
+        {
+            bool pixel = picture.pixel(width-1-x,height-1-y);
+
+            char byte = pixmap[y/8][x];     //get Byte from array
+            byte |= pixel<<(y%8);           //set bit in byte
+            pixmap[y/8][x] = byte;          //write byte back to array
+        }
+    }
+
+
+    //Write bits in file
+    QFile file(filename);
+    file.open(QIODevice::WriteOnly);
+
+    file.write(&pixmap[0][0], ((height+7)/8) * width);
+
+    file.close();
 }
+
