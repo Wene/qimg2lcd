@@ -140,7 +140,7 @@ void LcdImage::saveAsLcd(QString filename)
     {
         for (int y = 0; y < height; y++)
         {
-            bool pixel = picture.pixel(width-1-x,height-1-y);
+            bool pixel = (picture.pixel(width-1-x,height-1-y) == qRgb(0,0,0));
 
             char byte = pixmap[y/8][x];     //get Byte from array
             byte |= pixel<<(y%8);           //set bit in byte
