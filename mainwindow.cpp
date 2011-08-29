@@ -47,6 +47,9 @@ void MainWindow::ChangeSize()
 
 void MainWindow::UpdatePreview()
 {
+    myImage.setInvert(ui->btnInvert->isChecked());
+    myImage.setColorLimit(ui->slidRed->value(), ui->slidGreen->value(), ui->slidBlue->value());
+
     ui->lblPreview->setPixmap(QPixmap::fromImage(myImage.getLcdPreview()));
     ui->lblImage->setPixmap(QPixmap::fromImage(myImage.getImgPreview()));
 }

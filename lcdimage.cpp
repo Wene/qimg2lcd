@@ -54,14 +54,31 @@ QImage LcdImage::getLcdPreview()
     QImage colorImage(fullImage.scaled(width, height));
     QImage monoImage(width, height, QImage::Format_Mono);
     monoImage.fill(0);
-    for (int y = 0; y < height; y++)
+    if (invert)                                 //invert the color in monoImage.setPixel() with "!"
     {
-        for (int x = 0; x < width; x++)
+        for (int y = 0; y < height; y++)
         {
-            QColor myPoint(colorImage.pixel(x,y));
-            monoImage.setPixel(x,y,(myPoint.red() > redLimit ||
-                    myPoint.green() > greenLimit ||
-                    myPoint.blue() > blueLimit));
+            for (int x = 0; x < width; x++)
+            {
+                QColor myPoint(colorImage.pixel(x,y));
+                monoImage.setPixel(x,y,!(myPoint.red() > redLimit ||
+                                         myPoint.green() > greenLimit ||
+                                         myPoint.blue() > blueLimit));
+            }
+        }
+
+    }
+    else
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                QColor myPoint(colorImage.pixel(x,y));
+                monoImage.setPixel(x,y,(myPoint.red() > redLimit ||
+                                        myPoint.green() > greenLimit ||
+                                        myPoint.blue() > blueLimit));
+            }
         }
     }
     return monoImage;
@@ -136,15 +153,32 @@ void LcdImage::saveAsLcd(QString filename)
     memset(pixmap, 0, (height+7)/8 * width);
 
     //Read pixels from image in the array
-    for (int x = 0; x < width; x++)
+    if (invert)                                 //invert the color with bool pixel = !(...)
     {
-        for (int y = 0; y < height; y++)
+        for (int x = 0; x < width; x++)
         {
-            bool pixel = (picture.pixel(width-1-x,height-1-y) == qRgb(0,0,0));
+            for (int y = 0; y < height; y++)
+            {
+                bool pixel = !(picture.pixel(width-1-x,height-1-y) == qRgb(0,0,0));
 
-            char byte = pixmap[y/8][x];     //get Byte from array
-            byte |= pixel<<(y%8);           //set bit in byte
-            pixmap[y/8][x] = byte;          //write byte back to array
+                char byte = pixmap[y/8][x];     //get Byte from array
+                byte |= pixel<<(y%8);           //set bit in byte
+                pixmap[y/8][x] = byte;          //write byte back to array
+            }
+        }
+    }
+    else
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                bool pixel = (picture.pixel(width-1-x,height-1-y) == qRgb(0,0,0));
+
+                char byte = pixmap[y/8][x];     //get Byte from array
+                byte |= pixel<<(y%8);           //set bit in byte
+                pixmap[y/8][x] = byte;          //write byte back to array
+            }
         }
     }
 
